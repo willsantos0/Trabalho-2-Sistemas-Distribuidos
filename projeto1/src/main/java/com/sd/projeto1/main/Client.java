@@ -37,6 +37,7 @@ public class Client {
         ExecutorService executor = Executors.newCachedThreadPool();
 
         Thread receive = new Thread(new Runnable() {
+            // metodo que recebe resposta do servidor
             @Override
             public void run() {
                 try {
