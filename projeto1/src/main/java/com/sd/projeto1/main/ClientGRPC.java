@@ -24,12 +24,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.SerializationUtils;
 
-public class Client {
+public class ClientGRPC {
 
     private static Queue<DatagramPacket> comandos = new LinkedList<>();
     private static DatagramSocket socketCliente;
     private static InetAddress enderecoIP;
     private static MapaDao mapaDAO = new MapaDao();
+    private static List<Integer> chavesMonitoradas = new ArrayList<Integer>();
 
     static PropertyManagement pm = new PropertyManagement();
     
@@ -114,7 +115,7 @@ public class Client {
 
     public static void menu() throws Exception {
 
-        int opcao = 0, chave = 0;
+        int opcao = 0, chave = 0, chaveEscolhida;
         String msg;
         BufferedReader mensagem;
         Mapa mapa;
@@ -128,7 +129,8 @@ public class Client {
         System.out.println("2 - Atualizar");
         System.out.println("3 - Excluir");
         System.out.println("4 - Buscar");
-        System.out.println("5 - Sair");
+        System.out.println("5 - Monitorar chave");
+        System.out.println("6 - Sair");
         System.out.println("Opção:");
 
         opcao = scanner.nextInt();
@@ -212,6 +214,19 @@ public class Client {
 
                 break;
             case 5:
+                
+                List<Mapa> listaDeChaves = new ArrayList<Mapa>();
+                listaDeChaves = mapaDAO.buscarTodos();
+                System.out.println("Qual chave deseja monitorar?");
+                for (int i = 0; i < listaDeChaves.size(); i++) {
+                        System.out.print(listaDeChaves.get(i).getChave() + " ");
+                }
+                System.out.print("\n\n--> ");
+                chaveEscolhida = scanner.nextInt();
+                chavesMonitoradas.add(chaveEscolhida);
+
+                break;
+            case 6:
                 System.exit(1);
                 break;
             default:
