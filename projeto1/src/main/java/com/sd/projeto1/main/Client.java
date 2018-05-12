@@ -1,17 +1,21 @@
 package com.sd.projeto1.main;
 
+import com.sd.projeto1.dao.MapaDao;
 import com.sd.projeto1.model.Mapa;
 import com.sd.projeto1.model.MapaDTO;
 import com.sd.projeto1.util.PropertyManagement;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -25,9 +29,11 @@ public class Client {
     private static Queue<DatagramPacket> comandos = new LinkedList<>();
     private static DatagramSocket socketCliente;
     private static InetAddress enderecoIP;
+    private static MapaDao mapaDAO = new MapaDao();
+    private static List<Integer> chavesMonitoradas = new ArrayList<Integer>();
 
     static PropertyManagement pm = new PropertyManagement();
-
+    
     public static void main(String[] args) throws SocketException, UnknownHostException {
 
         socketCliente = new DatagramSocket();
@@ -71,12 +77,32 @@ public class Client {
                 Scanner scanner = new Scanner(System.in);
                 try {
                     while (true) {
-                        int opcao;
+                       //private List<Integer> chavesMonitoradas = new ArrayList<Integer>(); só pra lembrar o nome kk
+                        List<Mapa> listaDeChaves = new ArrayList<Mapa>();
+                        int opcao, i, troca=-1, chaveEscolhida;
+                        int[] tamanhoListaChaves;
                         System.out.println("Digite 1 se deseja monitar alguma chave ");
-                        System.out.println("--> ");
+                        System.out.print("--> ");
                         opcao = scanner.nextInt();
-                        if (opcao == 1) {   
-                                    System.out.println("teste");
+                        if (opcao == 1) {
+                            do{
+                               
+                                listaDeChaves = mapaDAO.buscarTodos();
+                                System.out.println("Quais chaves deseja monitorar?");
+                                for (i = 0; i < listaDeChaves.size(); i++) {
+                                        System.out.println(listaDeChaves.get(i).getChave());
+                                }
+                                System.out.print("--> ");
+                                chaveEscolhida = scanner.nextInt();
+                                chavesMonitoradas.add(chaveEscolhida);
+                                
+                                System.out.println("Deseja escolher mais uma chave para monitorar? (1-Sim/2-Não)");
+                                opcao = scanner.nextInt();
+                                if(opcao != 1){
+                                    troca = 1;
+                                }
+                                
+                            }while(troca!=1);
                         }
 
                         menu();
