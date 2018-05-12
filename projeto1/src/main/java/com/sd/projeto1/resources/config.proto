@@ -6,14 +6,16 @@ option java_package = "com.sd.projeto1.main";
 
 
 service Messenger{
-    rpc Message (MessageIn) returns (MessageOut){}
+    rpc Monitora (MonitorRequest) returns (MonitorRepley){}
 }
 
-message MessageIn{
-    DatagramSocket socketIn = 1;
+message MonitorRequest{
+    String operacao = 1;
+    int chave = 2;
 
 }
 
-message MessageOut{
-    DatagramSocket socketOut = 1;
+message MonitoraRepley{
+    String operacao = 1;
+    int chave = 2;
 }

@@ -2,6 +2,7 @@ package com.sd.projeto1.main;
 
 import com.sd.projeto1.dao.MapaDao;
 import com.sd.projeto1.model.Mapa;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 public class Server{
     
     private static MapaDao mapaDAO = new MapaDao();
+   
     
     public static void main(String[] args) throws Exception {
         List<Mapa> logs = new ArrayList<Mapa>();

@@ -68,8 +68,17 @@ public class Client {
         Thread send = new Thread(new Runnable() {
             @Override
             public void run() {
+                Scanner scanner = new Scanner(System.in);
                 try {
                     while (true) {
+                        int opcao;
+                        System.out.println("Digite 1 se deseja monitar alguma chave ");
+                        System.out.println("--> ");
+                        opcao = scanner.nextInt();
+                        if (opcao == 1) {   
+                                    System.out.println("teste");
+                        }
+
                         menu();
                         Thread.sleep(2000);
                     }
@@ -129,7 +138,7 @@ public class Client {
             case 1:
                 System.out.println("Digite a chave:");
                 chave = scanner.nextInt();
-             
+
                 System.out.println("Digite a Mensagem:");
                 msg = mensagem.readLine();
 
@@ -214,6 +223,5 @@ public class Client {
         System.out.println("Chave: " + mapa.getMapa().getChave());
         System.out.println("Texto: " + mapa.getMapa().getTexto());
     }
-    
-    
+
 }
