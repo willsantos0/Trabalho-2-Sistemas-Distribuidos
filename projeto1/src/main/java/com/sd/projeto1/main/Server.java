@@ -5,26 +5,26 @@ import com.sd.projeto1.model.Mapa;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Server{
     
     private static MapaDao mapaDAO = new MapaDao();
-   
     
     public static void main(String[] args) throws Exception {
         List<Mapa> logs = new ArrayList<Mapa>();
+        Operacoes crud = new Operacoes();
         
         logs = mapaDAO.buscarTodos();
         
         for(Mapa m: logs){
-            BigInteger chave = new BigInteger(String.valueOf(m.getChave()));
-
-            ServerThreadDisco.mapa.put(chave, m.getTexto());
+            crud.salvar(m);
         }
         
         System.out.println("Log do Disco Recuperado");
-        System.out.println("Tamanho do log: " + ServerThreadDisco.mapa.size() + "\n");
+        System.out.println("Tamanho do log: " + crud.getMapa().size() + "\n");
         
         
         System.out.println("Servidor Iniciado...");

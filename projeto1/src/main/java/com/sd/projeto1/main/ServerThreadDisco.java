@@ -5,6 +5,7 @@
  */
 package com.sd.projeto1.main;
 
+import com.sd.projeto01.message.ComandResponse;
 import com.sd.projeto1.dao.MapaDao;
 import com.sd.projeto1.model.Mapa;
 import com.sd.projeto1.model.MapaDTO;
@@ -27,13 +28,13 @@ import org.apache.commons.lang3.SerializationUtils;
  * @author willi
  */
 public class ServerThreadDisco implements Runnable {
-
-    public static Map<BigInteger, String> mapa = new HashMap();
+    private Operacoes crud = new Operacoes();
     private DatagramSocket socketServidor;
     private static PropertyManagement pm;
     private static byte[] in;
     private MapaDao mapaDAO = new MapaDao();
     private ExecutorService executor;
+    private io.grpc.stub.StreamObserver<ComandResponse> responseObserverGrpc;
 
     /// Recebendo o pacote da Thread Anterior;
     ServerThreadDisco(DatagramSocket socketServidor) {
@@ -73,44 +74,13 @@ public class ServerThreadDisco implements Runnable {
         }
     }
     
-    public static void salvar(Mapa mapa1) {
-        BigInteger chave = new BigInteger(String.valueOf(mapa1.getChave()));
-
-        if (mapa.containsKey(mapa1.getChave())) {
-            System.out.println("Mensagem com essa chave já adicionada");
-        }
-
-        mapa.put(chave, mapa1.getTexto());
-    }
-
-    public static void editar(Mapa mapa1) {
-        BigInteger chave = new BigInteger(String.valueOf(mapa1.getChave()));
-
-        if (mapa.containsKey(chave)) {
-            mapa.replace(chave, mapa1.getTexto());
-            return;
-        }
-        System.out.println("Chave não encontrada");       
-    }
-
-    public static void excluir(Mapa mapa1) {
-        BigInteger chave = new BigInteger(String.valueOf(mapa1.getChave()));
-
-        mapa.remove(chave);
-    }
-
-    public static String buscar(Mapa mapa1) {
-        BigInteger chave = new BigInteger(String.valueOf(mapa1.getChave()));
-        return mapa.get(chave);
-    }
-
-    public static void imprimeCRUD(Mapa mapa1) {
+    public void imprimeCRUD(Mapa mapa1) {
         System.out.println("\n===============================");
         System.out.println("Chave: " + mapa1.getChave());
         System.out.println("Texto: " + mapa1.getTexto());
         System.out.println("Tipo de Operaçao: " + Utilidades.retornaTipoOperacao(mapa1.getTipoOperacaoId()));
         System.out.println("Data: " + mapa1.getData());
-        System.out.println("Tamanho da fila: " + mapa.size());
+        System.out.println("Tamanho da fila: " + crud.getMapa().size());
         System.out.println("===============================");
     }
 
@@ -133,7 +103,7 @@ public class ServerThreadDisco implements Runnable {
                 
                 if (mi != null) {
                     mapaDTO.setMapa(mi);
-                    salvar(mi);
+                    crud.salvar(mi);
                     imprimeCRUD(mi);
                     mapaDTO.setMensagem("Inserido com Sucesso!");
 
@@ -146,7 +116,7 @@ public class ServerThreadDisco implements Runnable {
                 
                 if (ma != null) {
                     mapaDTO.setMapa(ma);
-                    editar(ma);
+                    crud.editar(ma);
                     imprimeCRUD(ma);
                     mapaDTO.setMensagem("Atualizado com Sucesso!");
 
@@ -160,7 +130,7 @@ public class ServerThreadDisco implements Runnable {
                 if (me != null) {
                     me.setTipoOperacaoId(3);
                     mapaDTO.setMapa(me);
-                    excluir(me);
+                    crud.excluir(me);
                     imprimeCRUD(me);
                     mapaDTO.setMensagem("Excluido com Sucesso!");
 
@@ -182,6 +152,11 @@ public class ServerThreadDisco implements Runnable {
                     mapaDTO.setMensagem("Erro ao recuperar!");
                 }
                 break;
+            case 5:
+                ComandResponse rspGrpc = ComandResponse.newBuilder().setCmd(mapaEntity.getChave() + " " + Utilidades.retornaTipoOperacao(mapaEntity.getTipoOperacaoId())).build();
+                this.responseObserverGrpc.onNext(rspGrpc);
+                this.responseObserverGrpc.onCompleted();
+                break;
             default:
                 mapaDTO.setMapa(null);
                 mapaDTO.setMensagem("Opção inválida");
@@ -191,4 +166,11 @@ public class ServerThreadDisco implements Runnable {
         return mapaDTO;
     }
 
+    public io.grpc.stub.StreamObserver<ComandResponse> getResponseObserverGrpc() {
+        return responseObserverGrpc;
+    }
+    
+    public void setResponseObserverGrpc(io.grpc.stub.StreamObserver<ComandResponse> responseObserverGrpc) {
+        this.responseObserverGrpc = responseObserverGrpc;
+    }
 }
