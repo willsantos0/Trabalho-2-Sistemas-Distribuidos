@@ -13,15 +13,15 @@ public class Utilidades {
     public static String retornaTipoOperacao(int tipo){
         switch(tipo){
             case CREATE:
-                return "Inserção";
+                return "Inserir";
             case UPDATE:
-                return "Atualização";
+                return "Atualizar";
             case DELETE:
-                return "Deleção";
+                return "Excluir";
             case SEARCH:
-                return "Procura";
+                return "Procurar";
             default:
-                return "Inválido";
+                return "Invalido";
         }
     }
 }

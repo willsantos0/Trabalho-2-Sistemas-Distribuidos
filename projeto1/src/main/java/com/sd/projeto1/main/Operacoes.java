@@ -22,7 +22,7 @@ public class Operacoes {
         BigInteger chave = new BigInteger(String.valueOf(mapa1.getChave()));
 
         if (mapa.containsKey(mapa1.getChave())) {
-            System.out.println("Mensagem com essa chave já adicionada");
+            System.out.println("Mensagem com essa chave ja adicionada");
         }
 
         mapa.put(chave, mapa1.getTexto());
@@ -35,7 +35,7 @@ public class Operacoes {
             mapa.replace(chave, mapa1.getTexto());
             return;
         }
-        System.out.println("Chave não encontrada");       
+        System.out.println("Chave nao encontrada");       
     }
 
     public void excluir(Mapa mapa1) {
@@ -53,5 +53,13 @@ public class Operacoes {
     public Map<BigInteger, String> getMapa() {
         return mapa;
     }
+    
+    public String buscarTodos() {
+		String toString = "";
+		for( Map.Entry< BigInteger, String > entry : mapa.entrySet() ) {
+			toString = toString.concat( "(" + entry.getKey().toString() + "," + entry.getValue().toString() + ")" );
+		}
+		return toString;
+	}
     
 }

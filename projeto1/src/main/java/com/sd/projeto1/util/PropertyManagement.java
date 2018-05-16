@@ -81,6 +81,15 @@ public class PropertyManagement {
         return prop.getProperty("address");
     }
     
+    public int getPortGRPC() {
+        return Integer.parseInt(prop.getProperty("port", "13267"));
+         // return Integer.parseInt(prop.getProperty("port", "13267"));
+    }
+    
+    public void setPortGRPC(int port) {
+        prop.setProperty("port", port + "");
+    }
+
     public void setMailPassword(String address) {
         prop.setProperty("address",address);
     }

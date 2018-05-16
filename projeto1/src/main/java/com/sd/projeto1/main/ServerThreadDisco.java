@@ -5,18 +5,14 @@
  */
 package com.sd.projeto1.main;
 
-import com.sd.projeto01.message.ComandResponse;
 import com.sd.projeto1.dao.MapaDao;
 import com.sd.projeto1.model.Mapa;
 import com.sd.projeto1.model.MapaDTO;
 import com.sd.projeto1.util.PropertyManagement;
 import com.sd.projeto1.util.Utilidades;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -34,7 +30,7 @@ public class ServerThreadDisco implements Runnable {
     private static byte[] in;
     private MapaDao mapaDAO = new MapaDao();
     private ExecutorService executor;
-    private io.grpc.stub.StreamObserver<ComandResponse> responseObserverGrpc;
+//    private io.grpc.stub.StreamObserver<ComandResponse> responseObserverGrpc;
 
     /// Recebendo o pacote da Thread Anterior;
     ServerThreadDisco(DatagramSocket socketServidor) {
@@ -153,9 +149,9 @@ public class ServerThreadDisco implements Runnable {
                 }
                 break;
             case 5:
-                ComandResponse rspGrpc = ComandResponse.newBuilder().setCmd(mapaEntity.getChave() + " " + Utilidades.retornaTipoOperacao(mapaEntity.getTipoOperacaoId())).build();
-                this.responseObserverGrpc.onNext(rspGrpc);
-                this.responseObserverGrpc.onCompleted();
+//                ComandResponse rspGrpc = ComandResponse.newBuilder().setCmd(mapaEntity.getChave() + " " + Utilidades.retornaTipoOperacao(mapaEntity.getTipoOperacaoId())).build();
+//                this.responseObserverGrpc.onNext(rspGrpc);
+//                this.responseObserverGrpc.onCompleted();
                 break;
             default:
                 mapaDTO.setMapa(null);
@@ -166,11 +162,11 @@ public class ServerThreadDisco implements Runnable {
         return mapaDTO;
     }
 
-    public io.grpc.stub.StreamObserver<ComandResponse> getResponseObserverGrpc() {
-        return responseObserverGrpc;
-    }
-    
-    public void setResponseObserverGrpc(io.grpc.stub.StreamObserver<ComandResponse> responseObserverGrpc) {
-        this.responseObserverGrpc = responseObserverGrpc;
-    }
+//    public io.grpc.stub.StreamObserver<ComandResponse> getResponseObserverGrpc() {
+//        return responseObserverGrpc;
+//    }
+//    
+//    public void setResponseObserverGrpc(io.grpc.stub.StreamObserver<ComandResponse> responseObserverGrpc) {
+//        this.responseObserverGrpc = responseObserverGrpc;
+//    }
 }
