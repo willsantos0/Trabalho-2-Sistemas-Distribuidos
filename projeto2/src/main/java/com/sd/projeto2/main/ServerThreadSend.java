@@ -6,9 +6,7 @@
 package com.sd.projeto2.main;
 
 import com.sd.projeto2.dao.MapaDao;
-import com.sd.projeto2.model.Mapa;
 import com.sd.projeto2.model.MapaDTO;
-import com.sd.projeto2.util.Utilidades;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.DatagramPacket;

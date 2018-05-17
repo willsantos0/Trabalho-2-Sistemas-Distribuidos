@@ -37,6 +37,9 @@ public class ClientThreadReceive implements Runnable{
                     //String msg = new String(pacoteRecebido.getData(), 0, pacoteRecebido.getLength());
                     MapaDTO maparetorno = (MapaDTO) SerializationUtils.deserialize(pacoteRecebido.getData());
 
+                    if(maparetorno.getMensagemMonitoramento() != null)
+                        System.out.println(maparetorno.getMensagemMonitoramento());
+                    
                     if (maparetorno == null) {
                         System.out.println(maparetorno.getMensagem());
                     } else {

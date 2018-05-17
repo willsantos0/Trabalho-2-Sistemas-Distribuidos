@@ -6,13 +6,13 @@ import java.util.Map;
 import java.util.Queue;
 
 import com.sd.projeto2.main.Operacoes;
-import com.sd.projeto1.proto.ContextRequest;
-import com.sd.projeto1.proto.ContextResponse;
-import com.sd.projeto1.proto.ContextServiceGrpc;
-import com.sd.projeto1.proto.SubscribeRequest;
-import com.sd.projeto1.proto.SubscribeResponse;
 import com.sd.projeto2.dao.MapaDao;
 import com.sd.projeto2.model.Mapa;
+import com.sd.projeto2.proto.ContextRequest;
+import com.sd.projeto2.proto.ContextResponse;
+import com.sd.projeto2.proto.ContextServiceGrpc;
+import com.sd.projeto2.proto.SubscribeRequest;
+import com.sd.projeto2.proto.SubscribeResponse;
 
 import io.grpc.stub.StreamObserver;
 import java.util.Arrays;

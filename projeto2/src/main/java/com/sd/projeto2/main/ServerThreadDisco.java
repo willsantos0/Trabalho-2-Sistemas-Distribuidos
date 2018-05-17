@@ -13,6 +13,9 @@ import com.sd.projeto2.util.Utilidades;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -30,7 +33,7 @@ public class ServerThreadDisco implements Runnable {
     private static byte[] in;
     private MapaDao mapaDAO = new MapaDao();
     private ExecutorService executor;
-//    private io.grpc.stub.StreamObserver<ComandResponse> responseObserverGrpc;
+    private static List<Integer> chavesMonitoradas = new ArrayList<Integer>();
 
     /// Recebendo o pacote da Thread Anterior;
     ServerThreadDisco(DatagramSocket socketServidor) {
@@ -54,7 +57,17 @@ public class ServerThreadDisco implements Runnable {
 
                     MapaDTO mapaDisco = new MapaDTO();
                     mapaDisco = tipoOperacao(maparetorno);
-
+                    
+                    if(findKey(maparetorno.getChave()))
+                        mapaDisco.setMensagemMonitoramento("=====================================\n" +
+                                                    "   --MONITORAMENTO DE CHAVE--\nA chave: '" + maparetorno.getChave() + "' foi acionada pela instrucao de " + Utilidades.retornaTipoOperacao(maparetorno.getTipoOperacaoId()) +
+                                                    "\n=====================================\n");
+                    
+                    if(maparetorno.getTipoOperacaoId() == 5){
+                        chavesMonitoradas.add(maparetorno.getChave());
+                        mapaDisco.setMensagem("Monitoramento realizado com sucesso.");
+                    }
+                    
                     ServerThreadSend serverSend = new ServerThreadSend(mapaDisco, socketServidor);
 
                     if (serverSend != null) {
@@ -162,6 +175,16 @@ public class ServerThreadDisco implements Runnable {
         return mapaDTO;
     }
 
+    public boolean findKey(int id){ 
+        for(Integer chave : chavesMonitoradas){
+            if(chave == id)
+                return true;
+        }
+        
+        
+    return false; 
+}
+    
 //    public io.grpc.stub.StreamObserver<ComandResponse> getResponseObserverGrpc() {
 //        return responseObserverGrpc;
 //    }

@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import com.sd.projeto1.proto.SubscribeResponse;
-import com.sd.projeto2.util.Utilidades;
+import com.sd.projeto2.proto.SubscribeResponse;
 import io.grpc.stub.StreamObserver;
 
 public class ThreadAlertSubscribes implements Runnable {

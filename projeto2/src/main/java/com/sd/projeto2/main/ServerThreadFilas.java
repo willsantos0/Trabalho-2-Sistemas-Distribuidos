@@ -1,22 +1,16 @@
 package com.sd.projeto2.main;
 
 import com.sd.projeto2.dao.MapaDao;
-import com.sd.projeto2.model.Mapa;
-import com.sd.projeto2.model.MapaDTO;
 import com.sd.projeto2.util.PropertyManagement;
-import com.sd.projeto2.util.Utilidades;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.lang3.SerializationUtils;
 
 /**
  *

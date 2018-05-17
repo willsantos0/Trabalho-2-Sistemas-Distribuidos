@@ -2,7 +2,7 @@ package com.sd.projeto2.main;
 
 import com.sd.projeto2.dao.MapaDao;
 import com.sd.projeto2.model.Mapa;
-import com.sd.projeto1.proto.SubscribeResponse;
+import com.sd.projeto2.proto.SubscribeResponse;
 import com.sd.projeto2.util.PropertyManagement;
 import io.grpc.stub.StreamObserver;
 import java.net.DatagramSocket;

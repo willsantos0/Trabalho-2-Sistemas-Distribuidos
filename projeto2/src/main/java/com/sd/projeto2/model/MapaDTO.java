@@ -18,6 +18,7 @@ public class MapaDTO implements Serializable{
     private List<Mapa> mapas;
     private Mapa mapa;
     private String mensagem;
+    private String mensagemMonitoramento;
     
     public MapaDTO() {
         mapa = new Mapa();
@@ -42,6 +43,13 @@ public class MapaDTO implements Serializable{
     }
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+    
+    public String getMensagemMonitoramento() {
+        return mensagemMonitoramento;
+    }
+    public void setMensagemMonitoramento(String mensagemMonitoramento) {
+        this.mensagemMonitoramento = mensagemMonitoramento;
     }
  
 }

@@ -60,13 +60,14 @@ public class ClientThreadSend implements Runnable {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n===============================");
-        System.out.println("Digite a operação: ");
+        System.out.println("Digite a operacao: ");
         System.out.println("1 - Inserir");
         System.out.println("2 - Atualizar");
         System.out.println("3 - Excluir");
         System.out.println("4 - Buscar");
-        System.out.println("5 - Sair");
-        System.out.println("Opção:");
+        System.out.println("5 - Monitorar chave");
+        System.out.println("6 - Sair");
+        System.out.println("Opcao:");
 
         opcao = scanner.nextInt();
 
@@ -149,10 +150,23 @@ public class ClientThreadSend implements Runnable {
 
                 break;
             case 5:
+                System.out.println("Digite a chave da mensagem que deseja monitorar:");
+                chave = scanner.nextInt();
+
+                mapa = new Mapa();
+                mapa.setChave(chave);
+                mapa.setTipoOperacaoId(5);
+
+                byte[] objectmonitoring = SerializationUtils.serialize(mapa);
+
+                send(objectmonitoring);
+               
+                break;
+            case 6:
                 System.exit(1);
                 break;
             default:
-                System.out.println("Opção Inválida");
+                System.out.println("Opcao invalida");
                 break;
         }
     }

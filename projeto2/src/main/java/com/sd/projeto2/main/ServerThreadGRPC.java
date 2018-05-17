@@ -1,6 +1,6 @@
 package com.sd.projeto2.main;
 
-import com.sd.projeto1.proto.SubscribeResponse;
+import com.sd.projeto2.proto.SubscribeResponse;
 import com.sd.projeto2.util.PropertyManagement;
 import java.util.ArrayList;
 import java.util.List;

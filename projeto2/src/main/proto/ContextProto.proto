@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "com.sd.projeto1.proto";
+option java_package = "com.sd.projeto2.proto";
 option java_outer_classname = "Message";
 option objc_class_prefix = "MSG";
 
-package com.sd.projeto1.proto;
+package com.sd.projeto2.proto;
 
 message ContextRequest {
 	string instruction = 1;

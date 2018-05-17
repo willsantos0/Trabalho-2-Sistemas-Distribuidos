@@ -8,6 +8,7 @@ public class Utilidades {
     public static final int UPDATE = 2;
     public static final int DELETE = 3;
     public static final int SEARCH = 4;
+    public static final int MONITORING = 5;
 
     
     public static String retornaTipoOperacao(int tipo){
@@ -20,6 +21,8 @@ public class Utilidades {
                 return "Excluir";
             case SEARCH:
                 return "Procurar";
+            case MONITORING:
+                return "Monitoramento";
             default:
                 return "Invalido";
         }
