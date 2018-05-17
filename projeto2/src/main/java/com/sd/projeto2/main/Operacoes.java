@@ -48,7 +48,7 @@ public class Operacoes {
         BigInteger chave = new BigInteger(String.valueOf(mapa1.getChave()));
         
         if( mapa.get(chave) != null ) {
-			return "(" + chave + "," + mapa.get( chave ) + ")";
+			return "=========================\nChave: " + chave + "\nMensagem: " + mapa.get( chave ) + "\n=========================";
 		} else {
 			return "Chave nao encontrada";
 		}

@@ -11,9 +11,13 @@ import com.sd.projeto1.proto.ContextResponse;
 import com.sd.projeto1.proto.ContextServiceGrpc;
 import com.sd.projeto1.proto.SubscribeRequest;
 import com.sd.projeto1.proto.SubscribeResponse;
+import com.sd.projeto2.dao.MapaDao;
+import com.sd.projeto2.model.Mapa;
 
 import io.grpc.stub.StreamObserver;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ContextService extends ContextServiceGrpc.ContextServiceImplBase {
 
@@ -21,6 +25,7 @@ public class ContextService extends ContextServiceGrpc.ContextServiceImplBase {
 	private Queue<String> executeQueue;
 	private Operacoes context;	
 	private Map<String, List<StreamObserver< SubscribeResponse>>> observers;
+        private MapaDao mapaDAO = new MapaDao();
 
 	public ContextService(Queue<String> logQueue, Queue<String> executeQueue, Operacoes context, Map<String, List< StreamObserver< SubscribeResponse > > > observers ) {
 		super();
@@ -33,7 +38,23 @@ public class ContextService extends ContextServiceGrpc.ContextServiceImplBase {
 	@Override
 	public void insert( ContextRequest request, StreamObserver< ContextResponse > responseObserver ) {
 		messageToQueue( request.getInstruction() );
-		ContextResponse response = ContextResponse.newBuilder().setMessage( "Instrucao executada: " + request.getInstruction() ).build();
+                
+                String[] instrucao = request.getInstruction().split(";"); 
+                Mapa mapa = new Mapa();
+                mapa.setChave(Integer.parseInt(instrucao[1]));
+                mapa.setTexto(instrucao[2]);
+                mapa.setTipoOperacaoId(1);
+               
+                context.salvar(mapa);
+                
+                try {
+                    mapaDAO.salvar(mapa);
+                } catch (Exception ex) {
+                    Logger.getLogger(ContextService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                
+		ContextResponse response = ContextResponse.newBuilder().setMessage( "Mensagem com a chave " + instrucao[1] + " foi inserido com sucesso" ).build();
 		responseObserver.onNext( response );
 		responseObserver.onCompleted();
 	}
@@ -41,7 +62,21 @@ public class ContextService extends ContextServiceGrpc.ContextServiceImplBase {
 	@Override
 	public void delete( ContextRequest request, StreamObserver< ContextResponse > responseObserver ) {
 		messageToQueue( request.getInstruction() );
-		ContextResponse response = ContextResponse.newBuilder().setMessage( "Instrucao executada: " + request.getInstruction() ).build();
+                
+                String[] instrucao = request.getInstruction().split(";"); 
+                Mapa mapa = new Mapa();
+                mapa.setChave(Integer.parseInt(instrucao[1]));
+                mapa.setTipoOperacaoId(3);
+                
+                context.excluir(mapa);
+                
+                try {
+                    mapaDAO.excluir(Integer.parseInt(instrucao[1]));
+                } catch (Exception ex) {
+                    Logger.getLogger(ContextService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+		ContextResponse response = ContextResponse.newBuilder().setMessage( "Mensagem com a chave " + instrucao[1] + " foi excluído com sucesso" ).build();
 		responseObserver.onNext( response );
 		responseObserver.onCompleted();
 	}
@@ -49,15 +84,35 @@ public class ContextService extends ContextServiceGrpc.ContextServiceImplBase {
 	@Override
 	public void update( ContextRequest request, StreamObserver< ContextResponse > responseObserver ) {
 		messageToQueue( request.getInstruction() );
-		ContextResponse response = ContextResponse.newBuilder().setMessage( "Instrucao executada: " + request.getInstruction() ).build();
+                
+                String[] instrucao = request.getInstruction().split(";"); 
+                Mapa mapa = new Mapa();
+                mapa.setChave(Integer.parseInt(instrucao[1]));
+                mapa.setTipoOperacaoId(2);
+                mapa.setTexto(instrucao[2]);
+                
+                context.editar(mapa);
+                
+                try {
+                    mapaDAO.editar(mapa);
+                } catch (Exception ex) {
+                    Logger.getLogger(ContextService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+		ContextResponse response = ContextResponse.newBuilder().setMessage( "Mensagem com a chave " + instrucao[1] + " foi atualizado com sucesso").build();
 		responseObserver.onNext( response );
 		responseObserver.onCompleted();
 	}
 
 	@Override
 	public void find( ContextRequest request, StreamObserver< ContextResponse > responseObserver ) {
-                messageToQueue( request.getInstruction() );
-		String stringify = context.buscarTodos();
+                messageToQueue(request.getInstruction());
+                
+                String[] instrucao = request.getInstruction().split(";"); 
+                Mapa mapa = new Mapa();
+                mapa.setChave(Integer.parseInt(instrucao[1]));
+                
+		String stringify = context.buscar(mapa);
 		ContextResponse response = ContextResponse.newBuilder().setMessage(stringify).build();
 		responseObserver.onNext( response );
 		responseObserver.onCompleted();

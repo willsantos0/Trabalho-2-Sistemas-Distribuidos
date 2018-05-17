@@ -71,7 +71,8 @@ public class ClientThreadSendGRPC implements Runnable {
         System.out.println("2 - Atualizar");
         System.out.println("3 - Excluir");
         System.out.println("4 - Buscar");
-        System.out.println("5 - Sair");
+        System.out.println("5 - Monitorar Chave");
+        System.out.println("6 - Sair");
         System.out.println("Opção:");
 
         opcao = scanner.nextInt();

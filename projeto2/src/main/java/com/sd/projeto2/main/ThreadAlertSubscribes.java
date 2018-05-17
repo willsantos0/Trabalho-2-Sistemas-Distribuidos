@@ -36,24 +36,25 @@ public class ThreadAlertSubscribes implements Runnable {
 	@Override
 	public void run() {
 
-		while ( true ) {
-			try {
-				//Thread.sleep( 20000 );
-				String instruction = executeQueue.poll();
-				if ( instruction != null ) {
-					System.out.println( "Executando instrucao: " + instruction );
-					execute( instruction );
-				}
-				Thread.sleep( 1 );
-			} catch ( Exception ex ) {
-				ex.printStackTrace();
-			}
+		while (true) {
+                    try {
+                        //Thread.sleep( 20000 );
+                        String instruction = executeQueue.poll();
+                        if ( instruction != null ) {
+                                List<String> params = Arrays.asList(instruction.split( ";" ));
+                            
+                                System.out.println( "Foi executada a instrucao de: " + params.get(0));
+                                execute( instruction );
+                        }
+                        Thread.sleep( 1 );
+                    } catch ( Exception ex ) {
+                            ex.printStackTrace();
+                    }
 		}
-
 	}
 
 	private void execute( String instruction ) {
-		List< String > params = Arrays.asList( instruction.split( ";" ) );
+		List<String> params = Arrays.asList(instruction.split( ";" ));
                 
                 Mapa mapa = new Mapa();
                 mapa.setChave(Integer.parseInt(params.get(1)));
@@ -62,7 +63,7 @@ public class ThreadAlertSubscribes implements Runnable {
             switch (params.get(0).toUpperCase()) {
                 case "PROCURAR":
                     if(!context.buscar(mapa).equals("Chave nao encontrada")){
-                        alertSubscribers( params.get( 1 ), "SEARCH -> " + params.get(1) );
+                        alertSubscribers( params.get(1), "PROCURAR");
                     }
                     else{
                         sendDatagram(params);
@@ -70,21 +71,21 @@ public class ThreadAlertSubscribes implements Runnable {
                     
                     return;
                 case "INSERIR":
-                    mapa.setTexto(params.get( 2 ));
+                    mapa.setTexto(params.get(2));
                     context.salvar(mapa);
-                    alertSubscribers( params.get( 1 ), "INSERT -> " + params.get( 2 ) );
+                    alertSubscribers( params.get(1), "INSERIR");
                     break;
                 case "ATUALIZAR":
                     if(!context.buscar(mapa).equals("Chave nao encontrada")){
                         
                         mapa.setTexto(params.get( 2 ));
                         context.editar(mapa);
-                        alertSubscribers( params.get( 1 ), "UPDATE -> " + params.get( 2 ) );
+                        alertSubscribers( params.get( 1 ), "ATUALIZAR" );
                     }
                     break;
                 default:
                     context.excluir(mapa);
-                    alertSubscribers( params.get( 1 ), "DELETE -> " + params.get( 1 ) );
+                    alertSubscribers( params.get( 1 ), "EXCLUIR" );
                     break;
             }
 
@@ -122,7 +123,9 @@ public class ThreadAlertSubscribes implements Runnable {
 			if( observers.get( key ) != null ) {
 				List<StreamObserver<SubscribeResponse>> observerList = observers.get(key);
 				for(StreamObserver<SubscribeResponse> observer : observerList) {
-					SubscribeResponse response = SubscribeResponse.newBuilder().setMessage( "Chave " + key + " alterada pela instrucao " + changed ).build();
+					SubscribeResponse response = SubscribeResponse.newBuilder().setMessage("=====================================\n" +
+                                                    "   --MONITORAMENTO DE CHAVE--\nA chave: '" + key + "' foi acionada pela instrucao de " + changed +
+                                                    "\n=====================================\n").build();
 					observer.onNext(response);
 				}
 			}
